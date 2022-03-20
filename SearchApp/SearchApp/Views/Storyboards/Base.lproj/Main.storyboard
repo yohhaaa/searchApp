@@ -27,7 +27,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Search" id="HU4-j1-GTZ"/>
                     <connections>
-                        <outlet property="tableView" destination="O3X-6b-uwQ" id="Yi6-FY-5V5"/>
+                        <outlet property="resultOfSearchTableView" destination="O3X-6b-uwQ" id="Yi6-FY-5V5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
