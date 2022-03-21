@@ -8,8 +8,8 @@ class SearchViewController: UIViewController {
     private let searchController = UISearchController(searchResultsController: nil)
     private var filteredPictures = [ImageStruct]()
     private var isFiltered: Bool { return searchController.isActive && !searchBarIsEmpty }
-    private var searchBarIsEmpty: Bool { guard let text = searchController.searchBar.text else {return false}
-        
+    
+    private var searchBarIsEmpty: Bool { guard let text = searchController.searchBar.text else { return false }
         return text.isEmpty
     }
     
@@ -27,14 +27,10 @@ class SearchViewController: UIViewController {
         view.backgroundColor = .lightGray
         resultOfSearchTableView.register(nib, forCellReuseIdentifier: "CustomCell")
         resultOfSearchTableView.backgroundColor = .lightGray
-        resultOfSearchTableView.delegate = self
-        resultOfSearchTableView.dataSource = self
         
         searchController.isActive = true
         searchController.searchBar.placeholder = "Search"
         searchController.searchBar.backgroundColor = .white
-        searchController.searchBar.delegate = self
-        
         searchController.searchResultsUpdater = self
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.obscuresBackgroundDuringPresentation = false
@@ -48,18 +44,15 @@ class SearchViewController: UIViewController {
 extension SearchViewController: UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as? CustomCell else {return UITableViewCell()}
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as? CustomCell else { return UITableViewCell() }
         
         var pictureForCell: ImageStruct
         
         if isFiltered{
+            pictureForCell = filteredPictures[indexPath.row]
             cell.spinner.isHidden = false
             cell.spinner.color = .white
-            cell.spinner.startAnimating()
-            
-            pictureForCell = filteredPictures[indexPath.row]
             cell.customLabel.text = pictureForCell.nameOfImage
-            cell.customImageView.backgroundColor = .gray
             cell.loadImageConfigure(with: pictureForCell.urlOfImage)
         }
         
@@ -82,18 +75,10 @@ extension SearchViewController: UISearchResultsUpdating {
     }
     
     private func filterContentForSearch(_ searchText: String) {
-        filteredPictures = ImageStruct.pictures.filter({ (pic:ImageStruct) -> Bool in
-            
+        filteredPictures = ImageStruct.pictures.filter({ (pic: ImageStruct) -> Bool in
             return pic.nameOfImage
-                .lowercased()
-                .contains(searchText.lowercased())})
+                .contains(searchText)})
         
         self.resultOfSearchTableView.reloadData()
-    }
-}
-
-//MARK: UISearchBarDelegate
-extension SearchViewController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     }
 }
