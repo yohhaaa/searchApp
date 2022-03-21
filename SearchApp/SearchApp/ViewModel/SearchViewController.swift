@@ -29,6 +29,7 @@ class SearchViewController: UIViewController {
         resultOfSearchTableView.register(nib, forCellReuseIdentifier: "CustomCell")
         resultOfSearchTableView.backgroundColor = .lightGray
         
+        searchController.searchBar.delegate = self
         searchController.isActive = true
         searchController.searchBar.placeholder = "Search"
         searchController.searchBar.backgroundColor = .white
@@ -77,12 +78,20 @@ extension SearchViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
         filterContentForSearch(searchController.searchBar.text!)
+       
     }
     
     private func filterContentForSearch(_ searchText: String) {
         filteredPictures = ImageStruct.pictures.filter({ (pic: ImageStruct) -> Bool in
             return pic.nameOfImage
                 .contains(searchText)})
+        if !searchBarIsEmpty {
             resultOfSearchTableView.reloadData()
+        }
+    }
+}
+extension SearchViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        resultOfSearchTableView.reloadData()
     }
 }
