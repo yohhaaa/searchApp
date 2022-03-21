@@ -13,6 +13,7 @@ class CustomCell: UITableViewCell {
         
         customCellView.backgroundColor = .lightGray
         customImageView.backgroundColor = .gray
+        
     }
 
     override func prepareForReuse(){

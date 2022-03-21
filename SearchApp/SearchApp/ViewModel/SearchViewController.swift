@@ -8,6 +8,7 @@ class SearchViewController: UIViewController {
     private let searchController = UISearchController(searchResultsController: nil)
     private var filteredPictures = [ImageStruct]()
     private var isFiltered: Bool { return searchController.isActive && !searchBarIsEmpty }
+    private var allPictures = ImageStruct.pictures
     
     private var searchBarIsEmpty: Bool { guard let text = searchController.searchBar.text else { return false }
         return text.isEmpty
@@ -37,6 +38,7 @@ class SearchViewController: UIViewController {
         
         navigationItem.searchController = searchController
     }
+    
 }
     
 //MARK: tableView Methods
@@ -50,19 +52,22 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource {
         
         if isFiltered{
             pictureForCell = filteredPictures[indexPath.row]
-            cell.spinner.isHidden = false
-            cell.spinner.color = .white
+            
             cell.customLabel.text = pictureForCell.nameOfImage
             cell.loadImageConfigure(with: pictureForCell.urlOfImage)
-        }
+        } else {
+            cell.customLabel.text = allPictures[indexPath.row].nameOfImage
+            cell.loadImageConfigure(with: allPictures[indexPath.row].urlOfImage) }
         
+        cell.spinner.isHidden = false
+        cell.spinner.color = .white
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isFiltered { return filteredPictures.count }
         
-        return 0
+        return allPictures.count
     }
 }
 
@@ -78,7 +83,6 @@ extension SearchViewController: UISearchResultsUpdating {
         filteredPictures = ImageStruct.pictures.filter({ (pic: ImageStruct) -> Bool in
             return pic.nameOfImage
                 .contains(searchText)})
-        
-        self.resultOfSearchTableView.reloadData()
+            resultOfSearchTableView.reloadData()
     }
 }
