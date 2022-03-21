@@ -17,19 +17,19 @@ class CustomCell: UITableViewCell {
         customImageView.image = nil
     }
   
-    func configure(with urlString: String) {
+    func loadImageConfigure(with urlString: String) {
         guard let url = URL(string: urlString) else { return }
-        
-        URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
-            guard let data = data, error == nil else { return }
-            
-            DispatchQueue.main.async {
-                let image = UIImage(data: data)
-                self?.customImageView?.image = image
-                self?.spinner.stopAnimating()
-                self?.spinner.isHidden = true
-            }
-            
-        }.resume()
+        let queue = DispatchQueue.global(qos: .utility)
+        queue.async {
+            URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
+                guard let data = data, error == nil else { return }
+                DispatchQueue.main.async {
+                    let image = UIImage(data: data)
+                    self?.customImageView?.image = image
+                    self?.spinner.stopAnimating()
+                    self?.spinner.isHidden = true
+                }
+            }.resume()
+        }
     }
 }

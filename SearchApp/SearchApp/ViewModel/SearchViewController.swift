@@ -60,7 +60,7 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource {
             pictureForCell = filteredPictures[indexPath.row]
             cell.customLabel.text = pictureForCell.nameOfImage
             cell.customImageView.backgroundColor = .gray
-            cell.configure(with: pictureForCell.urlOfImage)
+            cell.loadImageConfigure(with: pictureForCell.urlOfImage)
         }
         
         return cell
