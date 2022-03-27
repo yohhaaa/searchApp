@@ -6,16 +6,19 @@ class SearchViewController: UIViewController {
     
     @IBOutlet private weak var resultOfSearchTableView: UITableView!
     private let searchController = UISearchController(searchResultsController: nil)
-    private var filteredPictures = [ImageStruct]()
     private var isFiltered: Bool { return searchController.isActive && !searchBarIsEmpty }
     private var allPictures = ImageStruct.pictures
+    
+    
+    let network = NetworkService()
+    let presenter = PresenterClass()
     
     private var searchBarIsEmpty: Bool { guard let text = searchController.searchBar.text else { return false }
         return text.isEmpty
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         setup()
     }
@@ -23,6 +26,7 @@ class SearchViewController: UIViewController {
     //MARK: setup
     
     private func setup() {
+        
         
         let nib = UINib(nibName: "CustomCell", bundle: nil)
         view.backgroundColor = .lightGray
@@ -38,6 +42,7 @@ class SearchViewController: UIViewController {
         searchController.obscuresBackgroundDuringPresentation = false
         
         navigationItem.searchController = searchController
+        
     }
     
 }
@@ -49,16 +54,20 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as? CustomCell else { return UITableViewCell() }
         
-        var pictureForCell: ImageStruct
-        
         if isFiltered{
-            pictureForCell = filteredPictures[indexPath.row]
-            
-            cell.customLabel.text = pictureForCell.nameOfImage
-            cell.loadImageConfigure(with: pictureForCell.urlOfImage)
+
+            cell.customLabel.text = presenter.filteredPictures[indexPath.row].nameOfImage
+            network.imageLoader(with: presenter.filteredPictures[indexPath.row].urlOfImage ) { image in
+                cell.customImageView.image = image
+            }
         } else {
             cell.customLabel.text = allPictures[indexPath.row].nameOfImage
-            cell.loadImageConfigure(with: allPictures[indexPath.row].urlOfImage) }
+
+            network.imageLoader(with: allPictures[indexPath.row].urlOfImage ) { image in
+                cell.customImageView.image = image
+            }
+        }
+        
         
         cell.spinner.isHidden = false
         cell.spinner.color = .white
@@ -66,7 +75,7 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isFiltered { return filteredPictures.count }
+        if isFiltered { return presenter.filteredPictures.count}
         
         return allPictures.count
     }
@@ -82,9 +91,8 @@ extension SearchViewController: UISearchResultsUpdating {
     }
     
     private func filterContentForSearch(_ searchText: String) {
-        filteredPictures = ImageStruct.pictures.filter({ (pic: ImageStruct) -> Bool in
-            return pic.nameOfImage
-                .contains(searchText)})
+        presenter.filterSearch(searchText)
+        
         if !searchBarIsEmpty {
             resultOfSearchTableView.reloadData()
         }

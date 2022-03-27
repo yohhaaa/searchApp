@@ -3,46 +3,56 @@ import Foundation
 import UIKit
 
 //MARK: PRESENTER PROTOCOL
-protocol ViewProtocol: AnyObject {
-    func success ()
-    func failure ()
+
+
+
+
+
+protocol PresenterProtocol: AnyObject {
+    func filterSearch(_ searchText: String)
 }
 
-protocol ViewPresentProtocol: AnyObject {
-    init(view: ViewProtocol, fetchImage: FetchImagesProtocol)
-}
 
-class Presenter: ViewPresentProtocol {
-    weak var view: ViewProtocol?
-    let fetchImage: FetchImagesProtocol
+class PresenterClass: PresenterProtocol {
+    weak var view: SearchViewController?
     
-    required init(view: ViewProtocol, fetchImage: FetchImagesProtocol) {
-        self.view = view
-        self.fetchImage = fetchImage
+    var filteredPictures = [ImageStruct]()
+    func filterSearch(_ searchText: String) {
+        filteredPictures = ImageStruct.pictures.filter({ (pic: ImageStruct) -> Bool in
+            return pic.nameOfImage
+                .contains(searchText)})
+        
     }
     
+}
+
+
+protocol NetworkServiceProtocol: AnyObject {
+    func imageLoader(with urlString: String, completion: @escaping ((UIImage?) -> Void))
+}
+
+class NetworkService:NetworkServiceProtocol {
     
-}
-
-
-//MARK: LOAD IMAGE PROTOCOL
-protocol FetchImagesProtocol {
-    func fetchImages(urlString:String, completion: @escaping (Result<UIImage?,Error>)-> Void)
-}
-
-class FetchImages: FetchImagesProtocol {
-    func fetchImages(urlString: String, completion: @escaping (Result<UIImage?, Error>) -> Void) {
-        guard let url = URL(string: urlString) else { return }
-        
-            URLSession.shared.dataTask(with: url) { data, _, error in
-                guard let data = data, error == nil else { return }
-                if let image = UIImage(data: data) {
-                    completion(.success(image))
-                }
-                else if let error = error {
-                    completion(.failure(error))
-                    return
+    func imageLoader(with urlString: String, completion: @escaping ((UIImage?) -> Void)) {
+    guard let url = URL(string: urlString) else { return }
+    
+        let queue = DispatchQueue.global(qos: .utility)
+        queue.async {
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let error = error {
+                
+            } //TO DO: добавить дефолтную картинку если не загрузилось
+            else {
+                let image = UIImage(data: data!)
+                DispatchQueue.main.async {
+                    completion(image)
+                    }
                 }
             }.resume()
+        }
     }
 }
+
+//MARK: LOAD IMAGE PROTOCOL
+
+
