@@ -7,7 +7,7 @@ struct ImageStruct {
 
 extension ImageStruct {
     static var pictures = [
-        ImageStruct(nameOfImage: "0", urlOfImage: "https://kakoy-smysl.ru/wp-content/uploads/2020/02/grus-kart-so-sm-1.jpg"),
+        ImageStruct(nameOfImage: "0", urlOfImage: "http://kakoy-smysl.ru/wp-content/uploads/2020/02/grus-kart-so-sm-1.jpg"),
         ImageStruct(nameOfImage: "1", urlOfImage: "https://wonder-day.com/wp-content/uploads/2020/04/wonder-day-images-rainbow-37-1024x576.jpg"),
         ImageStruct(nameOfImage: "11", urlOfImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP5VKFOTn-2IxmSp9pcNC_B0PHDDvNQSAeVQ&usqp=CAU"),
         ImageStruct(nameOfImage: "12", urlOfImage: "https://i.pinimg.com/originals/b9/59/f1/b959f1670d2631589643575de5a782b7.jpg"),

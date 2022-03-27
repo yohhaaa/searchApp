@@ -58,13 +58,23 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource {
 
             cell.customLabel.text = presenter.filteredPictures[indexPath.row].nameOfImage
             network.imageLoader(with: presenter.filteredPictures[indexPath.row].urlOfImage ) { image in
-                cell.customImageView.image = image
+                switch image {
+                case .success( let images):
+                    cell.customImageView.image = images
+                case .failure(let error):
+                    cell.customImageView.image = UIImage(named: "errorLoad.jpeg")
+                }
             }
         } else {
             cell.customLabel.text = allPictures[indexPath.row].nameOfImage
 
             network.imageLoader(with: allPictures[indexPath.row].urlOfImage ) { image in
-                cell.customImageView.image = image
+                switch image {
+                case .success( let images):
+                    cell.customImageView.image = images
+                case .failure(let error):
+                    cell.customImageView.image = UIImage(named: "errorLoad.jpeg")
+                }
             }
         }
         
