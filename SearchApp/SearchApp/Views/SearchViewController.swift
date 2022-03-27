@@ -57,22 +57,22 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource {
         if isFiltered{
 
             cell.customLabel.text = presenter.filteredPictures[indexPath.row].nameOfImage
-            network.imageLoader(with: presenter.filteredPictures[indexPath.row].urlOfImage ) { image in
-                switch image {
+            network.imageLoader(with: presenter.filteredPictures[indexPath.row].urlOfImage ) { result in
+                switch result {
                 case .success( let images):
                     cell.customImageView.image = images
-                case .failure(let error):
+                case .failure(_):
                     cell.customImageView.image = UIImage(named: "errorLoad.jpeg")
                 }
             }
         } else {
             cell.customLabel.text = allPictures[indexPath.row].nameOfImage
 
-            network.imageLoader(with: allPictures[indexPath.row].urlOfImage ) { image in
-                switch image {
+            network.imageLoader(with: allPictures[indexPath.row].urlOfImage ) { result in
+                switch result {
                 case .success( let images):
                     cell.customImageView.image = images
-                case .failure(let error):
+                case .failure(_):
                     cell.customImageView.image = UIImage(named: "errorLoad.jpeg")
                 }
             }
@@ -113,3 +113,4 @@ extension SearchViewController: UISearchBarDelegate {
         resultOfSearchTableView.reloadData()
     }
 }
+

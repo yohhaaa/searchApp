@@ -21,6 +21,52 @@ class PresenterClass: PresenterProtocol {
     }
 }
 
+
+
+//MARK: Experimental presenter
+
+protocol MainViewProtocol: AnyObject {
+    func success()
+    func failure(error: Error)
+}
+
+protocol MainViewPresenterProtocol: AnyObject {
+    init(view: MainViewProtocol, networkService: NetworkServiceProtocol)
+    func loadedimage()
+
+    var img: UIImage { get set }
+}
+
+class MainPresenter: MainViewPresenterProtocol {
+
+    weak var view: MainViewProtocol?
+    let networkService: NetworkServiceProtocol!
+    
+
+    required init(view: MainViewProtocol, networkService: NetworkServiceProtocol) {
+        self.view = view
+        self.networkService = networkService
+        loadedimage()
+    }
+
+    func loadedimage() {
+        networkService.imageLoader(with: "http://kakoy-smysl.ru/wp-content/uploads/2020/02/grus-kart-so-sm-1.jpg") {[weak self] result in
+            guard let self = self else { return }
+
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let images):
+                    self.img = images!
+                    self.view?.success()
+                case .failure(let error):
+                    self.view?.failure(error: error)
+                }
+            }
+        }
+    }
+}
+
+
 //MARK: LOAD IMAGE PROTOCOL
 
 protocol NetworkServiceProtocol: AnyObject {
