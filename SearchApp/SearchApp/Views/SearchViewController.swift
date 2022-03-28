@@ -8,10 +8,9 @@ class SearchViewController: UIViewController {
     private let searchController = UISearchController(searchResultsController: nil)
     private var isFiltered: Bool { return searchController.isActive && !searchBarIsEmpty }
     private var allPictures = ImageStruct.pictures
-
     
-    let network = NetworkService()
-    let presenter = PresenterClass()
+    private let network = NetworkService()
+    private let presenter = PresenterClass()
     
     private var searchBarIsEmpty: Bool { guard let text = searchController.searchBar.text else { return false }
         return text.isEmpty
@@ -26,7 +25,6 @@ class SearchViewController: UIViewController {
     //MARK: setup
     
     private func setup() {
-        
         
         let nib = UINib(nibName: "CustomCell", bundle: nil)
         view.backgroundColor = .lightGray
@@ -44,7 +42,6 @@ class SearchViewController: UIViewController {
         navigationItem.searchController = searchController
         
     }
-    
 }
     
 //MARK: tableView Methods
@@ -55,19 +52,19 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as? CustomCell else { return UITableViewCell() }
         cell.setupCell(state: .loading)
         
-        if isFiltered{
+        if isFiltered{ // Я не понимаю, как можно убрать дублирование кода в блоках if isFiltered и  else?????
             
             cell.customLabel.text = presenter.filteredPictures[indexPath.row].nameOfImage
             network.imageLoader(with: presenter.filteredPictures[indexPath.row].urlOfImage ) { result in
                 switch result {
                 case .success( let images):
                     cell.customImageView.image = images
-                   
+                    cell.setupCell(state: .loaded)
                 case .failure(_):
                     cell.customImageView.image = UIImage(named: "errorLoad.jpeg")
-                    
+                    cell.setupCell(state: .failed)
                 }
-                cell.setupCell(state: .loaded)
+                
             }
             
         } else {
@@ -76,11 +73,12 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource {
                 switch result {
                 case .success( let images):
                     cell.customImageView.image = images
-                    
+                    cell.setupCell(state: .loaded)
                 case .failure(_):
                     cell.customImageView.image = UIImage(named: "errorLoad.jpeg")
+                    cell.setupCell(state: .failed)
                 }
-                cell.setupCell(state: .loaded)
+                
             }
         }
         
@@ -88,6 +86,7 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         if isFiltered { return presenter.filteredPictures.count}
         
         return allPictures.count
@@ -97,13 +96,13 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource {
 //MARK: search settings
 
 extension SearchViewController: UISearchResultsUpdating {
-    
     func updateSearchResults(for searchController: UISearchController) {
+        
         filterContentForSearch(searchController.searchBar.text!)
-       
     }
     
     private func filterContentForSearch(_ searchText: String) {
+        
         presenter.filterSearch(searchText)
         
         if !searchBarIsEmpty {

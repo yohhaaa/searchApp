@@ -1,10 +1,9 @@
 import UIKit
 
-
 enum CellState {
-   case loading
-   case loaded
-   case failed
+    case loading
+    case loaded
+    case failed
 }
 
 class CustomCell: UITableViewCell {
@@ -23,21 +22,25 @@ class CustomCell: UITableViewCell {
         spinner.color = .white
         
     }
-    func setupCell(state: CellState){
-        switch state {
-        case .loading:
-            self.spinner.startAnimating()
-            self.spinner.isHidden = false
-        case .loaded:
-            self.spinner.stopAnimating()
-            self.spinner.isHidden = true
-        case .failed:
-            self.spinner.isHidden = true
-        }
-    }
     
     override func prepareForReuse(){
         customImageView.image = nil
+    }
+    
+    func setupCell(state: CellState){
+        
+        switch state {
+            case .loading:
+                self.spinner.startAnimating()
+                self.spinner.isHidden = false
+            case .loaded:
+                self.spinner.stopAnimating()
+                self.spinner.isHidden = true
+            case .failed:
+                self.spinner.stopAnimating()
+                self.spinner.isHidden = true
+                
+        }
     }
   
 }
