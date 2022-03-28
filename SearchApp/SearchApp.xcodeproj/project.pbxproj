@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E73FDC2F27F0B9F40060D8D5 /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73FDC2E27F0B9F40060D8D5 /* Module.swift */; };
 		E7E0274A27DF606C002B22BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E0274927DF606C002B22BA /* AppDelegate.swift */; };
 		E7E0274C27DF606C002B22BA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E0274B27DF606C002B22BA /* SceneDelegate.swift */; };
 		E7E0274E27DF606C002B22BA /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E0274D27DF606C002B22BA /* SearchViewController.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E73FDC2E27F0B9F40060D8D5 /* Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
 		E7E0274627DF606C002B22BA /* SearchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SearchApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7E0274927DF606C002B22BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E7E0274B27DF606C002B22BA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 				E72FFC7527E60A9E00C957EE /* Views */,
 				E72FFC7227E60A6F00C957EE /* Models */,
 				E7E0274927DF606C002B22BA /* AppDelegate.swift */,
+				E73FDC2E27F0B9F40060D8D5 /* Module.swift */,
 				E7E0275D27DF777D002B22BA /* CustomCell.swift */,
 				E7E0275E27DF777D002B22BA /* CustomCell.xib */,
 				E72FFC7627E60AFC00C957EE /* Storyboards */,
@@ -186,6 +189,7 @@
 				E7E0274E27DF606C002B22BA /* SearchViewController.swift in Sources */,
 				E7E0274A27DF606C002B22BA /* AppDelegate.swift in Sources */,
 				E7E0275F27DF777D002B22BA /* CustomCell.swift in Sources */,
+				E73FDC2F27F0B9F40060D8D5 /* Module.swift in Sources */,
 				E7E0276427E0D8ED002B22BA /* ImageStruct.swift in Sources */,
 				E7E0274C27DF606C002B22BA /* SceneDelegate.swift in Sources */,
 			);

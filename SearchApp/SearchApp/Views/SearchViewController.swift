@@ -8,7 +8,7 @@ class SearchViewController: UIViewController {
     private let searchController = UISearchController(searchResultsController: nil)
     private var isFiltered: Bool { return searchController.isActive && !searchBarIsEmpty }
     private var allPictures = ImageStruct.pictures
-    
+
     
     let network = NetworkService()
     let presenter = PresenterClass()
@@ -53,34 +53,37 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as? CustomCell else { return UITableViewCell() }
+        cell.setupCell(state: .loading)
         
         if isFiltered{
-
+            
             cell.customLabel.text = presenter.filteredPictures[indexPath.row].nameOfImage
             network.imageLoader(with: presenter.filteredPictures[indexPath.row].urlOfImage ) { result in
                 switch result {
                 case .success( let images):
                     cell.customImageView.image = images
+                   
                 case .failure(_):
                     cell.customImageView.image = UIImage(named: "errorLoad.jpeg")
+                    
                 }
+                cell.setupCell(state: .loaded)
             }
+            
         } else {
             cell.customLabel.text = allPictures[indexPath.row].nameOfImage
-
             network.imageLoader(with: allPictures[indexPath.row].urlOfImage ) { result in
                 switch result {
                 case .success( let images):
                     cell.customImageView.image = images
+                    
                 case .failure(_):
                     cell.customImageView.image = UIImage(named: "errorLoad.jpeg")
                 }
+                cell.setupCell(state: .loaded)
             }
         }
         
-        
-        cell.spinner.isHidden = false
-        cell.spinner.color = .white
         return cell
     }
     

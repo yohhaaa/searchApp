@@ -1,8 +1,14 @@
 import Foundation
-
+import UIKit
 struct ImageStruct {
     var nameOfImage:String
     var urlOfImage:String
+}
+
+struct Example {
+    var url: String
+    var image: UIImage
+    var name: String
 }
 
 extension ImageStruct {
