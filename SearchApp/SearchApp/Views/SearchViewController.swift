@@ -10,7 +10,9 @@ class SearchViewController: UIViewController {
     private var allPictures = ImageStruct.pictures
     
     private let network = NetworkService()
-    private let presenter = PresenterClass()
+    private let presenter = FilterClass()
+    
+    var present: MainViewPresenterProtocol!
     
     private var searchBarIsEmpty: Bool { guard let text = searchController.searchBar.text else { return false }
         return text.isEmpty
@@ -50,37 +52,38 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as? CustomCell else { return UITableViewCell() }
-        cell.setupCell(state: .loading)
         
-        if isFiltered{ // Я не понимаю, как можно убрать дублирование кода в блоках if isFiltered и  else?????
-            
-            cell.customLabel.text = presenter.filteredPictures[indexPath.row].nameOfImage
-            network.imageLoader(with: presenter.filteredPictures[indexPath.row].urlOfImage ) { result in
-                switch result {
-                case .success( let images):
-                    cell.customImageView.image = images
-                    cell.setupCell(state: .loaded)
-                case .failure(_):
-                    cell.customImageView.image = UIImage(named: "errorLoad.jpeg")
-                    cell.setupCell(state: .failed)
-                }
-                
-            }
-            
-        } else {
-            cell.customLabel.text = allPictures[indexPath.row].nameOfImage
-            network.imageLoader(with: allPictures[indexPath.row].urlOfImage ) { result in
-                switch result {
-                case .success( let images):
-                    cell.customImageView.image = images
-                    cell.setupCell(state: .loaded)
-                case .failure(_):
-                    cell.customImageView.image = UIImage(named: "errorLoad.jpeg")
-                    cell.setupCell(state: .failed)
-                }
-                
-            }
-        }
+        cell.setupCell(state: .loading)
+        cell.customImageView.image = present?.someImage
+//        if isFiltered{ // Я не понимаю, как можно убрать дублирование кода в блоках if isFiltered и  else?????
+//
+//            cell.customLabel.text = presenter.filteredPictures[indexPath.row].nameOfImage
+//            network.imageLoader(with: presenter.filteredPictures[indexPath.row].urlOfImage ) { result in
+//                switch result {
+//                case .success( let images):
+//                    cell.customImageView.image = images
+//                    cell.setupCell(state: .loaded)
+//                case .failure(_):
+//                    cell.customImageView.image = UIImage(named: "errorLoad.jpeg")
+//                    cell.setupCell(state: .failed)
+//                }
+//
+//            }
+//
+//        } else {
+//            cell.customLabel.text = allPictures[indexPath.row].nameOfImage
+//            network.imageLoader(with: allPictures[indexPath.row].urlOfImage ) { result in
+//                switch result {
+//                case .success( let images):
+//                    cell.customImageView.image = images
+//                    cell.setupCell(state: .loaded)
+//                case .failure(_):
+//                    cell.customImageView.image = UIImage(named: "errorLoad.jpeg")
+//                    cell.setupCell(state: .failed)
+//                }
+//
+//            }
+//        }
         
         return cell
     }
@@ -116,3 +119,12 @@ extension SearchViewController: UISearchBarDelegate {
     }
 }
 
+extension SearchViewController: MainViewProtocol {
+    func success(image: UIImage?) {
+        resultOfSearchTableView.reloadData()
+    }
+    func failure(error: Error) {
+        print("error")
+    }
+    
+}

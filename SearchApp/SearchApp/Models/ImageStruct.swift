@@ -4,6 +4,7 @@ import UIKit
 struct ImageStruct {
     var nameOfImage:String
     var urlOfImage:String
+    var image: UIImage?
 }
 
 extension ImageStruct {
