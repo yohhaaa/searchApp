@@ -7,10 +7,9 @@ class SearchViewController: UIViewController {
     @IBOutlet private weak var resultOfSearchTableView: UITableView!
     private let searchController = UISearchController(searchResultsController: nil)
     private var isFiltered: Bool { return searchController.isActive && !searchBarIsEmpty }
-    private var allPictures = ImageStruct.pictures
     
-    private let network = NetworkService()
-    private let presenter = FilterClass()
+//    private let network = NetworkService()
+//    private let presenter = FilterClass()
     
     var present: MainViewPresenterProtocol!
     
@@ -33,7 +32,7 @@ class SearchViewController: UIViewController {
         resultOfSearchTableView.register(nib, forCellReuseIdentifier: "CustomCell")
         resultOfSearchTableView.backgroundColor = .lightGray
         
-        searchController.searchBar.delegate = self
+//       searchController.searchBar.delegate = self
         searchController.isActive = true
         searchController.searchBar.placeholder = "Search"
         searchController.searchBar.backgroundColor = .white
@@ -55,7 +54,8 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource {
         
         cell.setupCell(state: .loading)
         cell.customImageView.image = present?.someImage
-//        if isFiltered{ // Я не понимаю, как можно убрать дублирование кода в блоках if isFiltered и  else?????
+  
+//        if isFiltered{
 //
 //            cell.customLabel.text = presenter.filteredPictures[indexPath.row].nameOfImage
 //            network.imageLoader(with: presenter.filteredPictures[indexPath.row].urlOfImage ) { result in
@@ -90,9 +90,9 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if isFiltered { return presenter.filteredPictures.count}
+//        if isFiltered { return present.filteredPictures.count}
         
-        return allPictures.count
+        return ImageStruct.pictures.count
     }
 }
 
@@ -100,13 +100,11 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource {
 
 extension SearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        
         filterContentForSearch(searchController.searchBar.text!)
     }
     
     private func filterContentForSearch(_ searchText: String) {
-        
-        presenter.filterSearch(searchText)
+        present.filterSearch(searchText)
         
         if !searchBarIsEmpty {
             resultOfSearchTableView.reloadData()
@@ -115,16 +113,16 @@ extension SearchViewController: UISearchResultsUpdating {
 }
 extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        present.filterSearch(searchText)
         resultOfSearchTableView.reloadData()
     }
 }
 
 extension SearchViewController: MainViewProtocol {
-    func success(image: UIImage?) {
+    func success() {
         resultOfSearchTableView.reloadData()
     }
     func failure(error: Error) {
         print("error")
     }
-    
 }
