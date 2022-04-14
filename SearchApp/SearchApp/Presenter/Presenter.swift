@@ -11,30 +11,25 @@ protocol MainViewProtocol:AnyObject {
 
 protocol MainViewPresenterProtocol: AnyObject {
     
+    var filteredPicturesName: [ImageStruct] {get set}
     init(view: MainViewProtocol, networkService: NetworkServiceProtocol)
-    
-    func filterSearch(_ searchText: String)
-    func loadedimage(urlString: String)
-    
-    var filteredPictures: [ImageStruct] {get set}
+    func filterContentForSearch(searchText: String)
+    func loadedImage(urlString: String)
     var someImage: UIImage? {get set}
 }
 
 class MainPresenter: MainViewPresenterProtocol {
-
+    var filteredPicturesName = [ImageStruct]()
     let networkService: NetworkServiceProtocol!
     weak var view: MainViewProtocol?
-    var pictures = ImageStruct.pictures
-    var filteredPictures = [ImageStruct]()
     var someImage: UIImage?
     
     required init(view: MainViewProtocol, networkService: NetworkServiceProtocol) {
         self.view = view
         self.networkService = networkService
-        loadedimage(urlString: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP5VKFOTn-2IxmSp9pcNC_B0PHDDvNQSAeVQ&usqp=CAU")
     }
     
-    func loadedimage(urlString: String) {
+    func loadedImage(urlString: String) {
         networkService.imageLoader(with: urlString){ [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
@@ -48,17 +43,21 @@ class MainPresenter: MainViewPresenterProtocol {
             }
         }
     }
-    
-    func filterSearch(_ searchText: String) {
-        filteredPictures = ImageStruct.pictures.filter({ (pic: ImageStruct) -> Bool in
-            return pic.nameOfImage
-                .contains(searchText)})
+    func filterContentForSearch(searchText: String) {
+        filteredPicturesName = ImageStruct.pictures.filter({ (pic: ImageStruct) -> Bool in
+                    return pic.nameOfImage.contains(searchText)})
+        self.view?.success()
+        }
     }
-}
+    
 
 
 
 
 
 
-
+//func filterContentForSearch(searchText: String) {
+//    filteredPictures = ImageStruct.pictures.filter({ (pic: ImageStruct) -> Bool in
+//            return pic.nameOfImage.contains(searchText)})
+//}
+//

@@ -4,12 +4,10 @@ class SearchViewController: UIViewController {
     
     //MARK: Properties
     
-    @IBOutlet private weak var resultOfSearchTableView: UITableView!
+    var resultOfSearchTableView = UITableView()
     private let searchController = UISearchController(searchResultsController: nil)
     private var isFiltered: Bool { return searchController.isActive && !searchBarIsEmpty }
     
-//    private let network = NetworkService()
-//    private let presenter = FilterClass()
     
     var present: MainViewPresenterProtocol!
     
@@ -20,28 +18,34 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setup()
+        
+        setupView()
+        initSearchController()
+        present.loadedImage(urlString: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP5VKFOTn-2IxmSp9pcNC_B0PHDDvNQSAeVQ&usqp=CAU")
     }
     
     //MARK: setup
     
-    private func setup() {
-        
+    private func setupView() {
         let nib = UINib(nibName: "CustomCell", bundle: nil)
         view.backgroundColor = .lightGray
         resultOfSearchTableView.register(nib, forCellReuseIdentifier: "CustomCell")
         resultOfSearchTableView.backgroundColor = .lightGray
-        
-//       searchController.searchBar.delegate = self
+        resultOfSearchTableView.delegate = self
+        resultOfSearchTableView.dataSource = self
+        resultOfSearchTableView.frame = view.bounds
+        title = "Search"
+        view.addSubview(resultOfSearchTableView)
+    }
+    private func initSearchController() {
+        searchController.searchBar.delegate = self
         searchController.isActive = true
         searchController.searchBar.placeholder = "Search"
         searchController.searchBar.backgroundColor = .white
         searchController.searchResultsUpdater = self
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.obscuresBackgroundDuringPresentation = false
-        
         navigationItem.searchController = searchController
-        
     }
 }
     
@@ -54,43 +58,12 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource {
         
         cell.setupCell(state: .loading)
         cell.customImageView.image = present?.someImage
-  
-//        if isFiltered{
-//
-//            cell.customLabel.text = presenter.filteredPictures[indexPath.row].nameOfImage
-//            network.imageLoader(with: presenter.filteredPictures[indexPath.row].urlOfImage ) { result in
-//                switch result {
-//                case .success( let images):
-//                    cell.customImageView.image = images
-//                    cell.setupCell(state: .loaded)
-//                case .failure(_):
-//                    cell.customImageView.image = UIImage(named: "errorLoad.jpeg")
-//                    cell.setupCell(state: .failed)
-//                }
-//
-//            }
-//
-//        } else {
-//            cell.customLabel.text = allPictures[indexPath.row].nameOfImage
-//            network.imageLoader(with: allPictures[indexPath.row].urlOfImage ) { result in
-//                switch result {
-//                case .success( let images):
-//                    cell.customImageView.image = images
-//                    cell.setupCell(state: .loaded)
-//                case .failure(_):
-//                    cell.customImageView.image = UIImage(named: "errorLoad.jpeg")
-//                    cell.setupCell(state: .failed)
-//                }
-//
-//            }
-//        }
-        
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-//        if isFiltered { return present.filteredPictures.count}
+        if isFiltered { return present.filteredPicturesName.count}
         
         return ImageStruct.pictures.count
     }
@@ -100,23 +73,19 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource {
 
 extension SearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        filterContentForSearch(searchController.searchBar.text!)
-    }
-    
-    private func filterContentForSearch(_ searchText: String) {
-        present.filterSearch(searchText)
-        
-        if !searchBarIsEmpty {
-            resultOfSearchTableView.reloadData()
-        }
-    }
-}
-extension SearchViewController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        present.filterSearch(searchText)
+        let searchText = searchController.searchBar.text!
+        present.filterContentForSearch(searchText: searchText)
         resultOfSearchTableView.reloadData()
     }
 }
+
+extension SearchViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        resultOfSearchTableView.reloadData()
+    }
+}
+
+//MARK: MainViewProtocol
 
 extension SearchViewController: MainViewProtocol {
     func success() {
