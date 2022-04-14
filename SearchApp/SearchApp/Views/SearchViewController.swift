@@ -8,20 +8,16 @@ class SearchViewController: UIViewController {
     private let searchController = UISearchController(searchResultsController: nil)
     private var isFiltered: Bool { return searchController.isActive && !searchBarIsEmpty }
     
-    
-    var present: MainViewPresenterProtocol!
-    
     private var searchBarIsEmpty: Bool { guard let text = searchController.searchBar.text else { return false }
         return text.isEmpty
     }
     
+    var presenter: MainViewPresenterProtocol!
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         setupView()
         initSearchController()
-        present.loadedImage(urlString: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP5VKFOTn-2IxmSp9pcNC_B0PHDDvNQSAeVQ&usqp=CAU")
     }
     
     //MARK: setup
@@ -57,13 +53,21 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as? CustomCell else { return UITableViewCell() }
         
         cell.setupCell(state: .loading)
-        cell.customImageView.image = present?.someImage
+        cell.customLabel.text = ImageStruct.pictures[indexPath.row].nameOfImage
+        cell.customImageView.image = presenter?.someImage //временное решение для теста
+        //TO DO: Убрать дублирование кода
+        if isFiltered {
+            cell.customLabel.text = presenter.filteredPicturesName[indexPath.row].nameOfImage
+            cell.customImageView.image = presenter?.someImage //временное решение для теста
+        }
+        cell.setupCell(state: .loaded)
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if isFiltered { return present.filteredPicturesName.count}
+        if isFiltered { return presenter.filteredPicturesName.count}
         
         return ImageStruct.pictures.count
     }
@@ -74,7 +78,7 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource {
 extension SearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         let searchText = searchController.searchBar.text!
-        present.filterContentForSearch(searchText: searchText)
+        presenter.filterContentForSearch(searchText: searchText)
         resultOfSearchTableView.reloadData()
     }
 }
@@ -93,5 +97,8 @@ extension SearchViewController: MainViewProtocol {
     }
     func failure(error: Error) {
         print("error")
+    }
+    func filteredText(){
+        resultOfSearchTableView.reloadData()
     }
 }

@@ -5,6 +5,7 @@ import UIKit
 //MARK: Experimental presenter
 
 protocol MainViewProtocol:AnyObject {
+    func filteredText()
     func success()
     func failure(error: Error)
 }
@@ -27,6 +28,7 @@ class MainPresenter: MainViewPresenterProtocol {
     required init(view: MainViewProtocol, networkService: NetworkServiceProtocol) {
         self.view = view
         self.networkService = networkService
+        loadedImage(urlString: "https://i.pinimg.com/originals/1f/32/de/1f32de75ae0a1ac218a902f6f361a6d7.jpg")
     }
     
     func loadedImage(urlString: String) {
@@ -46,18 +48,6 @@ class MainPresenter: MainViewPresenterProtocol {
     func filterContentForSearch(searchText: String) {
         filteredPicturesName = ImageStruct.pictures.filter({ (pic: ImageStruct) -> Bool in
                     return pic.nameOfImage.contains(searchText)})
-        self.view?.success()
+        
         }
     }
-    
-
-
-
-
-
-
-//func filterContentForSearch(searchText: String) {
-//    filteredPictures = ImageStruct.pictures.filter({ (pic: ImageStruct) -> Bool in
-//            return pic.nameOfImage.contains(searchText)})
-//}
-//

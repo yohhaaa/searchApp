@@ -16,7 +16,7 @@ class ModelBuilder: Builder {
         let view = SearchViewController()
         let networkService = NetworkService()
         let presenter = MainPresenter(view: view, networkService: networkService)
-        view.present = presenter
+        view.presenter = presenter
         return view
     }
 }
