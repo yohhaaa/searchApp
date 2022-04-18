@@ -16,9 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         
-        let mainVC = ModelBuilder.createMainModule()
-        let navBar = UINavigationController(rootViewController: mainVC)
-        window?.rootViewController = navBar
+        let searchViewController = ModelBuilder.createMainModule()
+        let navigationBar = UINavigationController(rootViewController: searchViewController)
+        window?.rootViewController = navigationBar
         window?.makeKeyAndVisible()
         return true
     }

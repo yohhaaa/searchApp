@@ -3,7 +3,6 @@ import UIKit
 enum CellState {
     case loading
     case loaded
-    case failed
 }
 
 class CustomCell: UITableViewCell {
@@ -16,11 +15,9 @@ class CustomCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         customCellView.backgroundColor = .lightGray
         customImageView.backgroundColor = .gray
         spinner.color = .white
-        
     }
     
     override func prepareForReuse(){
@@ -28,19 +25,13 @@ class CustomCell: UITableViewCell {
     }
     
     func setupCell(state: CellState){
-        
         switch state {
-            case .loading:
-                self.spinner.startAnimating()
-                self.spinner.isHidden = false
-            case .loaded:
-                self.spinner.stopAnimating()
-                self.spinner.isHidden = true
-            case .failed:
-                self.spinner.stopAnimating()
-                self.spinner.isHidden = true
-                
-        }
-    }
-  
+           case .loading:
+               self.spinner.startAnimating()
+               self.spinner.isHidden = false
+           case .loaded:
+               self.spinner.stopAnimating()
+               self.spinner.isHidden = true
+           }
+       }
 }
