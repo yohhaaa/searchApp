@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 struct ImageStruct {
     var nameOfImage:String
@@ -10,7 +11,7 @@ extension ImageStruct {
         ImageStruct(nameOfImage: "0", urlOfImage: "https://kakoy-smysl.ru/wp-content/uploads/2020/02/grus-kart-so-sm-1.jpg"),
         ImageStruct(nameOfImage: "1", urlOfImage: "https://wonder-day.com/wp-content/uploads/2020/04/wonder-day-images-rainbow-37-1024x576.jpg"),
         ImageStruct(nameOfImage: "11", urlOfImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP5VKFOTn-2IxmSp9pcNC_B0PHDDvNQSAeVQ&usqp=CAU"),
-        ImageStruct(nameOfImage: "12", urlOfImage: "https://i.pinimg.com/originals/b9/59/f1/b959f1670d2631589643575de5a782b7.jpg"),
+        ImageStruct(nameOfImage: "12", urlOfImage: "htt://i.pinimg.com/originals/b9/59/f1/b959f1670d2631589643575de5a782b7.jpg"),
         ImageStruct(nameOfImage: "13", urlOfImage: "https://i.pinimg.com/originals/1f/32/de/1f32de75ae0a1ac218a902f6f361a6d7.jpg"),
         ImageStruct(nameOfImage: "14", urlOfImage: "https://sib.fm/storage/article/December2021/kartinki-s-novym-godom-2022-12.jpg"),
         ImageStruct(nameOfImage: "111", urlOfImage: "https://rozabox.com/wp-content/uploads/2019/01/man-5846064_1920-735x400.jpg"),

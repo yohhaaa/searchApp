@@ -32,8 +32,9 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="XT3-3h-lFY">
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Ahr-03-J7h">
                         <rect key="frame" x="81" y="48" width="20" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </activityIndicatorView>
                 </subviews>
                 <constraints>
@@ -42,8 +43,6 @@
                     <constraint firstItem="Nnc-5j-DAM" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="Zya-Sn-J6h"/>
                     <constraint firstItem="CfR-q9-enx" firstAttribute="leading" secondItem="Nnc-5j-DAM" secondAttribute="trailing" constant="8" id="hxZ-jT-cpr"/>
                     <constraint firstAttribute="bottom" secondItem="Nnc-5j-DAM" secondAttribute="bottom" constant="8" id="laI-cs-13a"/>
-                    <constraint firstItem="XT3-3h-lFY" firstAttribute="centerY" secondItem="Nnc-5j-DAM" secondAttribute="centerY" id="nzi-oj-glb"/>
-                    <constraint firstItem="XT3-3h-lFY" firstAttribute="centerX" secondItem="Nnc-5j-DAM" secondAttribute="centerX" id="pyV-Xt-Z57"/>
                     <constraint firstItem="CfR-q9-enx" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="52" id="tmF-qJ-b4q"/>
                     <constraint firstAttribute="bottom" secondItem="CfR-q9-enx" secondAttribute="bottom" constant="55" id="yNJ-kE-za4"/>
                 </constraints>
@@ -53,7 +52,7 @@
                 <outlet property="customCellView" destination="H2p-sc-9uM" id="tIJ-64-ixH"/>
                 <outlet property="customImageView" destination="Nnc-5j-DAM" id="LXm-KG-3OO"/>
                 <outlet property="customLabel" destination="CfR-q9-enx" id="JPG-qG-rCJ"/>
-                <outlet property="spinner" destination="XT3-3h-lFY" id="X13-Os-j7b"/>
+                <outlet property="spinner" destination="Ahr-03-J7h" id="oSd-cd-JBN"/>
             </connections>
             <point key="canvasLocation" x="298.55072463768118" y="-21.763392857142858"/>
         </tableViewCell>
