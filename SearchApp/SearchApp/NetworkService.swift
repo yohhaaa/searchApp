@@ -4,13 +4,13 @@ import Foundation
 //MARK: NetworkService PROTOCOL with cache
 
 protocol NetworkServiceProtocol: AnyObject {
-    func imageLoader(with urlString: String, completion: @escaping (Result<UIImage?,Error>) -> Void)
+    func loadImageService(with urlString: String, completion: @escaping (Result<UIImage?,Error>) -> Void)
 }
 
-class NetworkService:NetworkServiceProtocol {
+class NetworkService: NetworkServiceProtocol {
     
     var imageCache = NSCache<NSString, UIImage>()
-    func imageLoader(with urlString: String, completion: @escaping (Result<UIImage?,Error>) -> Void) {
+    func loadImageService(with urlString: String, completion: @escaping (Result<UIImage?,Error>) -> Void) {
         if let cachedImage = imageCache.object(forKey: urlString as NSString) {
             completion(.success(cachedImage))}
         else {
@@ -19,11 +19,14 @@ class NetworkService:NetworkServiceProtocol {
             URLSession.shared.dataTask(with: url) { (data, _, error) in
                 DispatchQueue.main.async {
                 if let error = error {
-                    completion(.failure(error))}
+                    completion(.failure(error))
+                }
                 else {
                     let image = UIImage(data: data!)
                     completion(.success(image))
-                    self.imageCache.setObject(image!, forKey: urlString as NSString)}}
+                    self.imageCache.setObject(image!, forKey: urlString as NSString)
+                }
+                }
             }.resume()
             }
         }

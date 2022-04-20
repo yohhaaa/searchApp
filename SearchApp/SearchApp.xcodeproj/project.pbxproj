@@ -91,10 +91,11 @@
 				E7FE2B6527ECE830009C8270 /* Presenter */,
 				E72FFC7527E60A9E00C957EE /* Views */,
 				E72FFC7227E60A6F00C957EE /* Models */,
-				E7E0274927DF606C002B22BA /* AppDelegate.swift */,
+				E76F34962802227B0067FE34 /* NetworkService.swift */,
 				E73FDC2E27F0B9F40060D8D5 /* Module.swift */,
 				E7E0275D27DF777D002B22BA /* CustomCell.swift */,
 				E7E0275E27DF777D002B22BA /* CustomCell.xib */,
+				E7E0274927DF606C002B22BA /* AppDelegate.swift */,
 				E72FFC7627E60AFC00C957EE /* Storyboards */,
 				E7E0275227DF606D002B22BA /* Assets.xcassets */,
 				E7E0275727DF606D002B22BA /* Info.plist */,
@@ -106,7 +107,6 @@
 			isa = PBXGroup;
 			children = (
 				E7FE2B6627ECE854009C8270 /* Presenter.swift */,
-				E76F34962802227B0067FE34 /* NetworkService.swift */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
