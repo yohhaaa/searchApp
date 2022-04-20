@@ -20,13 +20,11 @@ class MainPresenter: MainViewPresenterProtocol {
     
     func loadImage(urlString: String, completion: @escaping (Result<UIImage?,Error>) -> Void) {
         networkService.loadImageService(with: urlString){ result in
-        DispatchQueue.main.async {
         switch result {
         case .success(let image):
             completion(.success(image))
         case .failure(let error):
             completion(.failure(error))
-        }
         }
         }
     }
