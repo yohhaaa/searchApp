@@ -15,9 +15,7 @@ class NetworkService: NetworkServiceProtocol {
             completion(.success(cachedImage))}
         else {
             guard let url = URL(string: urlString) else { return }
-            DispatchQueue.global(qos: .utility).async {
             URLSession.shared.dataTask(with: url) { (data, _, error) in
-                DispatchQueue.main.async {
                 if let error = error {
                     completion(.failure(error))
                 }
@@ -26,9 +24,7 @@ class NetworkService: NetworkServiceProtocol {
                     completion(.success(image))
                     self.imageCache.setObject(image!, forKey: urlString as NSString)
                 }
-                }
             }.resume()
-            }
         }
     }
 }
